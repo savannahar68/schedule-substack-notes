@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Substack Notes Scheduler</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <!-- Not connected state -->
+  <div id="view-disconnected" class="view hidden">
+    <div class="brand">
+      <div class="brand-icon">S</div>
+      <div>
+        <div class="brand-name">Notes Scheduler</div>
+        <div class="brand-sub">for Substack</div>
+      </div>
+    </div>
+    <div class="connect-card">
+      <p class="connect-hint">
+        Make sure you're logged into <strong>substack.com</strong> in this browser, then click Connect.
+      </p>
+      <button id="btn-connect" class="btn btn-primary btn-full">Connect to Substack</button>
+      <p id="connect-error" class="error-text hidden"></p>
+      <a href="options.html" target="_blank" class="settings-link">Settings</a>
+    </div>
+  </div>
+
+  <!-- Connected state -->
+  <div id="view-connected" class="view hidden">
+    <header class="header">
+      <div class="user-info">
+        <span id="status-dot" class="status-dot green"></span>
+        <span id="user-handle" class="handle"></span>
+      </div>
+      <div class="header-actions">
+        <a href="options.html" target="_blank" class="icon-btn" title="Settings">⚙</a>
+        <button id="btn-disconnect" class="icon-btn" title="Disconnect">✕</button>
+      </div>
+    </header>
+
+    <!-- Compose section -->
+    <div class="section">
+      <textarea
+        id="note-text"
+        class="note-textarea"
+        placeholder="Write your note… (double Enter = new paragraph)"
+        maxlength="2000"
+      ></textarea>
+      <div class="textarea-footer">
+        <span id="char-count" class="char-count">0</span>
+        <span class="char-hint">chars</span>
+      </div>
+      <div class="schedule-row">
+        <input type="datetime-local" id="schedule-time" class="datetime-input" />
+        <button id="btn-schedule" class="btn btn-primary">Schedule</button>
+      </div>
+      <p id="schedule-error" class="error-text hidden"></p>
+      <p id="schedule-success" class="success-text hidden"></p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Queue section -->
+    <div class="section queue-section">
+      <div class="queue-header">
+        <span class="section-title">Scheduled</span>
+        <button id="btn-refresh" class="icon-btn small" title="Refresh">↻</button>
+      </div>
+      <div id="queue-list" class="queue-list">
+        <div class="queue-empty">No scheduled notes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div id="view-loading" class="view">
+    <div class="loading-spinner">Loading…</div>
+  </div>
+
+  <script src="lib/api.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

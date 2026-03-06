@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Substack Notes Scheduler",
+  "version": "1.0.0",
+  "description": "Schedule your Substack Notes to publish at the perfect time.",
+  "permissions": [
+    "cookies",
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "*://substack.com/*",
+    "*://*.substack.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options.html"
+}

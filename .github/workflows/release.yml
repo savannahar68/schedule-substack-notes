@@ -1,0 +1,82 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-server:
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            artifact: substack-scheduler-macos-arm64
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            artifact: substack-scheduler-macos-x86_64
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            artifact: substack-scheduler-linux-x86_64
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            artifact: substack-scheduler-windows-x86_64.exe
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Build
+        run: cargo build --release --target ${{ matrix.target }}
+        working-directory: server
+
+      - name: Copy binary (unix)
+        if: runner.os != 'Windows'
+        run: cp server/target/${{ matrix.target }}/release/substack-scheduler ${{ matrix.artifact }}
+
+      - name: Copy binary (windows)
+        if: runner.os == 'Windows'
+        run: cp server/target/${{ matrix.target }}/release/substack-scheduler.exe ${{ matrix.artifact }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.artifact }}
+
+  build-extension:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Zip extension
+        run: zip -r substack-scheduler-extension.zip extension/ -x "*/.DS_Store" -x "__MACOSX/*"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: substack-scheduler-extension
+          path: substack-scheduler-extension.zip
+
+  release:
+    needs: [build-server, build-extension]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/download-artifact@v4
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            substack-scheduler-macos-arm64/substack-scheduler-macos-arm64
+            substack-scheduler-macos-x86_64/substack-scheduler-macos-x86_64
+            substack-scheduler-linux-x86_64/substack-scheduler-linux-x86_64
+            substack-scheduler-windows-x86_64.exe/substack-scheduler-windows-x86_64.exe
+            substack-scheduler-extension/substack-scheduler-extension.zip

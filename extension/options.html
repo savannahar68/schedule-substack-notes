@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Substack Scheduler — Settings</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <div class="brand-icon">S</div>
+        <div>
+          <div class="brand-name">Notes Scheduler</div>
+          <div class="brand-sub">Settings</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="card">
+        <h2 class="section-title">Backend Server</h2>
+
+        <div class="mode-toggle">
+          <button id="btn-mode-self" class="mode-btn active" data-mode="self">
+            Self-hosted
+          </button>
+          <button id="btn-mode-cloud" class="mode-btn" data-mode="cloud">
+            Cloud (hosted)
+          </button>
+        </div>
+
+        <div id="self-hosted-info" class="info-box">
+          Run <code>./substack-scheduler</code> on your machine, then connect below.
+        </div>
+
+        <div id="cloud-info" class="info-box hidden">
+          Use the hosted server — no setup needed.
+        </div>
+
+        <div class="field">
+          <label for="backend-url" class="label">Backend URL</label>
+          <input
+            type="url"
+            id="backend-url"
+            class="input"
+            placeholder="http://localhost:3000"
+          />
+        </div>
+
+        <div class="actions">
+          <button id="btn-save" class="btn btn-primary">Save</button>
+          <button id="btn-resync" class="btn btn-secondary">Re-sync Cookies</button>
+        </div>
+
+        <p id="save-status" class="status-text hidden"></p>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">Connection Status</h2>
+        <div id="status-display" class="status-display">
+          <div class="status-row">
+            <span class="status-label">Handle:</span>
+            <span id="status-handle" class="status-value">—</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Server:</span>
+            <span id="status-server" class="status-value">—</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Cookies:</span>
+            <span id="status-cookies" class="status-value">—</span>
+          </div>
+        </div>
+        <button id="btn-check-health" class="btn btn-secondary mt-8">Check Now</button>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">About</h2>
+        <p class="about-text">
+          Substack Notes Scheduler is open source. Run your own server or use the hosted version.<br /><br />
+          <strong>Warning:</strong> This extension uses Substack's unofficial API. Use responsibly — avoid scheduling more than a few notes per day.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <script src="lib/api.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
