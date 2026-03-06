@@ -13,6 +13,8 @@ There are two parts you need to set up once:
 
 Once set up, you just open the extension, write your note, pick a time, and click Schedule.
 
+> **Important:** Since the server runs on your own computer, your **laptop must be on and Chrome must be open** at the scheduled publish time. If your laptop is asleep or Chrome is closed, the note won't publish until the next time both are running.
+
 ---
 
 ## Step 1 — Download the files
