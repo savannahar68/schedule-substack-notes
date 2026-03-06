@@ -36,18 +36,30 @@ jobs:
         run: cargo build --release --target ${{ matrix.target }}
         working-directory: server
 
-      - name: Copy binary (unix)
-        if: runner.os != 'Windows'
-        run: cp server/target/${{ matrix.target }}/release/substack-scheduler ${{ matrix.artifact }}
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          cp server/target/${{ matrix.target }}/release/substack-scheduler ${{ matrix.artifact }}
+          chmod +x ${{ matrix.artifact }} start.command
+          tar -czf ${{ matrix.artifact }}.tar.gz ${{ matrix.artifact }} start.command
 
-      - name: Copy binary (windows)
+      - name: Package (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          cp server/target/${{ matrix.target }}/release/substack-scheduler ${{ matrix.artifact }}
+          chmod +x ${{ matrix.artifact }}
+          tar -czf ${{ matrix.artifact }}.tar.gz ${{ matrix.artifact }}
+
+      - name: Package (Windows)
         if: runner.os == 'Windows'
-        run: cp server/target/${{ matrix.target }}/release/substack-scheduler.exe ${{ matrix.artifact }}
+        run: |
+          cp server/target/${{ matrix.target }}/release/substack-scheduler.exe ${{ matrix.artifact }}
+          Compress-Archive -Path ${{ matrix.artifact }}, start.bat -DestinationPath ${{ matrix.artifact }}.zip
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
-          path: ${{ matrix.artifact }}
+          path: ${{ matrix.artifact }}.*
 
   build-extension:
     runs-on: ubuntu-latest
@@ -75,8 +87,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            substack-scheduler-macos-arm64/substack-scheduler-macos-arm64
-            substack-scheduler-macos-x86_64/substack-scheduler-macos-x86_64
-            substack-scheduler-linux-x86_64/substack-scheduler-linux-x86_64
-            substack-scheduler-windows-x86_64.exe/substack-scheduler-windows-x86_64.exe
+            substack-scheduler-macos-arm64/substack-scheduler-macos-arm64.tar.gz
+            substack-scheduler-macos-x86_64/substack-scheduler-macos-x86_64.tar.gz
+            substack-scheduler-linux-x86_64/substack-scheduler-linux-x86_64.tar.gz
+            substack-scheduler-windows-x86_64.exe/substack-scheduler-windows-x86_64.exe.zip
             substack-scheduler-extension/substack-scheduler-extension.zip

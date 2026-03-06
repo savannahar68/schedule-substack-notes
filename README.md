@@ -8,9 +8,9 @@ Schedule your Substack Notes. Substack doesn't have native scheduling for Notes 
 
 **Download (easiest):** grab the latest release from [GitHub Releases](../../releases).
 
-- **macOS** — download `substack-scheduler-macos-arm64` (M1/M2/M3) or `substack-scheduler-macos-x86_64` (Intel), and `start.command`. Put them in the same folder and double-click `start.command`. First time: right-click → Open to bypass Gatekeeper.
-- **Windows** — download `substack-scheduler-windows-x86_64.exe` and `start.bat`. Put them in the same folder and double-click `start.bat`.
-- **Linux** — download `substack-scheduler-linux-x86_64`, `chmod +x` it, run it.
+- **macOS** — download `substack-scheduler-macos-arm64.tar.gz` (M1/M2/M3) or `substack-scheduler-macos-x86_64.tar.gz` (Intel). Extract it, then double-click `start.command`. First run: right-click → Open to bypass Gatekeeper.
+- **Windows** — download `substack-scheduler-windows-x86_64.exe.zip`, extract it, double-click `start.bat`.
+- **Linux** — download `substack-scheduler-linux-x86_64.tar.gz`, extract it, run `./substack-scheduler-linux-x86_64`.
 
 **Build from source:**
 ```bash
@@ -29,9 +29,10 @@ DATA_DIR=./data
 
 ### 2. Install the Chrome extension
 
-1. Go to `chrome://extensions`
-2. Enable **Developer mode**
-3. Click **Load unpacked** → select the `extension/` folder
+1. Download `substack-scheduler-extension.zip` from the release and unzip it
+2. Go to `chrome://extensions`
+3. Enable **Developer mode**
+4. Click **Load unpacked** → select the unzipped `extension/` folder
 
 ### 3. Connect
 
